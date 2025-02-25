@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="max-w-xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ $ordenador->marca }} - {{ $ordenador->modelo }}</h2>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ $ordenador->nombre }} - {{ $ordenador->modelo }}</h2>
 
         <div class="border-t pt-4">
-            <p class="text-gray-600"><span class="font-semibold">Marca:</span> {{ $ordenador->marca }}</p>
+            <p class="text-gray-600"><span class="font-semibold">Marca:</span> {{ $ordenador->nombre }}</p>
             <p class="text-gray-600"><span class="font-semibold">Modelo:</span> {{ $ordenador->modelo }}</p>
             <p class="text-gray-600"><span class="font-semibold">Aula:</span> {{ $ordenador->aula->nombre }}</p>
         </div>
@@ -33,7 +33,6 @@
         </form>
     </div>
 
-    <!-- Tabla para los cambios -->
     <div class="overflow-x-auto mt-6 w-4/12 mx-auto">
         <table class="min-w-full table-auto bg-white border border-gray-300 rounded-lg">
             <thead>
@@ -59,7 +58,6 @@
 
             </tbody>
         </table>
-            <livewire:borrar-registros :ordenadorId="$ordenador->id" />
     </div>
 
 </x-app-layout>

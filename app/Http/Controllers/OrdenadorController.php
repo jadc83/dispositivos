@@ -7,6 +7,7 @@ use App\Http\Requests\StoreOrdenadorRequest;
 use App\Http\Requests\UpdateOrdenadorRequest;
 use App\Models\Aula;
 use App\Models\Ordenador;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,31 +18,16 @@ class OrdenadorController extends Controller
      */
     public function index(Request $request)
     {
-        $consulta = Ordenador::query();
-        $columnas = ['marca', 'modelo'];
+        $query = Ordenador::query();
 
-        $ordenar = $request->input('ordenar', session('ordenar', 'marca'));
-        $sentido = $request->input('sentido', session('sentido', 'asc'));
-
-        if (!in_array($ordenar, $columnas)) {
-            $ordenar = 'marca'; // Establecer el valor por defecto si no es válido
+        if ($busqueda = $request->input('busqueda')) {
+            $query->where('nombre', 'ilike', "%{$busqueda}%")
+                ->orWhere('modelo', 'ilike', "%{$busqueda}%");
         }
 
-        session(['ordenar' => $ordenar, 'sentido' => $sentido]);
+        $ordenadores = $query->orderBy('nombre', 'asc')->paginate(12);
 
-        $busqueda = $request->input('busqueda', session('busqueda', ''));
-        session(['busqueda' => $busqueda ?: session()->forget('busqueda')]);
-
-        // Filtrar la búsqueda
-        if ($busqueda) {
-            $consulta->where('marca', 'ilike', "%{$busqueda}%")
-                     ->orWhere('modelo', 'ilike', "%{$busqueda}%");
-        }
-
-        // Obtener los ordenadores paginados
-        $ordenadores = $consulta->orderBy($ordenar, $sentido)->paginate(9);
-
-        return view('ordenadores.index', compact('ordenadores', 'busqueda'));
+        return view('ordenadores.index', ['ordenadores' => $ordenadores]);
     }
 
     /**

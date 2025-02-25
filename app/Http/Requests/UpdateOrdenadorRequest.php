@@ -22,7 +22,7 @@ class UpdateOrdenadorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'marca' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255',
             'modelo' => 'required|string|max:255',
             'aula_id' => 'exists:aulas,id'
         ];
@@ -31,8 +31,8 @@ class UpdateOrdenadorRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'marca.required' => 'El nombre del equipo es obligatorio',
-            'marca.max' => 'La longitud del nombre no puede exceder los 255 caracteres',
+            'nombre.required' => 'El nombre del equipo es obligatorio',
+            'nombre.max' => 'La longitud del nombre no puede exceder los 255 caracteres',
             'modelo.required' => 'El nombre del equipo es obligatorio',
             'modelo.max' => 'La longitud del nombre no puede exceder los 255 caracteres',
         ];

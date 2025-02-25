@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('ordenadores', function (Blueprint $table) {
             $table->id();
-            $table->string('marca');
+            $table->string('nombre');
             $table->string('modelo');
             $table->foreignId('aula_id')->constrained();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

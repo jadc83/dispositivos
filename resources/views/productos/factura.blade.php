@@ -1,10 +1,10 @@
 <x-app-layout>
-    <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-6">
+    <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-6 mt-4">
         <h2 class="text-2xl font-bold text-center mb-4">Factura</h2>
 
         <div class="mb-4 border-b pb-2">
             <p class="text-gray-700"><strong>Número de Tarjeta:</strong> {{ $ticket->tarjeta }}</p>
-            <p class="text-gray-700"><strong>Fecha:</strong> {{ $ticket->created_at->format('d/m/Y H:i') }}</p>
+            <p class="text-gray-700"><strong>Fecha:</strong> {{ fecha($ticket->created_at) }}</p>
         </div>
 
         <table class="w-full border-collapse">

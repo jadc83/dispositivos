@@ -24,6 +24,7 @@ class StoreProductoRequest extends FormRequest
         return [
                 'nombre' => 'required|string|max:255|unique:productos,nombre',
                 'precio' => 'required|numeric|between:0,999999.99',
+                'imagen' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ];
     }
 

@@ -12,7 +12,7 @@ class Producto extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public $fillable = ['nombre', 'precio'];
+    public $fillable = ['nombre', 'precio', 'imagen'];
 
     public function tickets()
     {

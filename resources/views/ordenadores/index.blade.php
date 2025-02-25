@@ -14,37 +14,18 @@
                 <table class="w-8/12 mx-auto mt-4 text-sm text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th class="px-6 py-3 text-center">
-                                <a href="{{ route('ordenadores.index', ['busqueda' => session('busqueda'), 'ordenar' => 'marca',
-                                                                        'sentido' => session('ordenar') == 'marca' && session('sentido') == 'asc' ? 'desc' : 'asc' ]) }}">Marca
-                                        @if (session('ordenar') == 'marca')
-                                            {{ session('sentido') == 'asc' ? '↑' : '↓' }}
-                                        @endif
-                                </a>
-                            </th>
-
-                            <th class="px-6 py-3 text-center">
-                                <a href="{{ route('ordenadores.index', ['busqueda' => session('busqueda'), 'ordenar' => 'modelo',
-                                                                        'sentido' => session('ordenar') == 'modelo' && session('sentido') == 'asc' ? 'desc' : 'asc']) }}">Modelo
-                                        @if (session('ordenar') == 'modelo')
-                                            {{ session('sentido') == 'asc' ? '↑' : '↓' }}
-                                        @endif
-                                </a>
-                            </th>
-
+                            <th class="px-6 py-3 text-center">Nombre</th>
+                            <th class="px-6 py-3 text-center">Modelo</th>
                             <th class="px-6 py-3 text-center">Dispositivos</th>
-                            @can('admin')
-                                <th class="px-6 py-3">Acciones</th>
-                            @endcan
+                            @can('admin')<th class="px-6 py-3">Acciones</th>@endcan
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($ordenadores as $ordenador)
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="px-6 py-4 text-center">
                                     <a href="{{ route('ordenadores.show', $ordenador) }}">
-                                        {{ $ordenador->marca }}
+                                        {{ $ordenador->nombre }}
                                     </a>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -53,31 +34,27 @@
                                 <td class="px-6 py-4 text-center">
                                     {{ $ordenador->dispositivos->count() }}
                                 </td>
+
                                 @can('admin')
                                 <td class="px-6 py-4">
                                     <div class="flex justify-center">
-                                        <form action="{{ route('ordenadores.edit', $ordenador) }}" method="GET"
-                                            class="inline-block mr-2">
+                                        <form class="inline-block mr-2" action="{{ route('ordenadores.edit', $ordenador) }}" method="GET">
                                             @csrf
                                             <x-primary-button>Editar</x-primary-button>
                                         </form>
-                                        <form action="{{ route('ordenadores.destroy', $ordenador) }}" method="POST"
-                                            class="inline-block mr-2">
+                                        <form class="inline-block mr-2" action="{{ route('ordenadores.destroy', $ordenador) }}" method="POST">
                                             @csrf
                                             @method('delete')
-                                            <x-primary-button>Borrar</x-primary-button>
+                                            <x-primary-button onclick="event.preventDefault(); if (confirm('¿Está seguro?')) this.closest('form').submit();">Borrar</x-primary-button>
                                         </form>
                                     </div>
                                 </td>
                                 @endcan
+
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-
-                <div class="mt-4">
-                    {{ $ordenadores->appends(request()->query())->links() }}
-                </div>
             @else
                 <p class="text-center mt-4">No hay resultados</p>
             @endif

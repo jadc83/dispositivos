@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AddRequest;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use App\Models\Producto;
@@ -16,37 +15,33 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        // Definir las columnas válidas para ordenar
-        $columnasValidas = ['nombre', 'precio'];
         $consulta = Producto::query();
 
-        // Obtener el valor de 'ordenar' de la solicitud o de la sesión, con validación
-        $ordenar = $request->input('ordenar', session('ordenar', 'nombre'));
-        $sentido = $request->input('sentido', session('sentido', 'asc'));
-
-        // Si el campo 'ordenar' no es válido, asignar el valor por defecto 'nombre'
-        if (!in_array($ordenar, $columnasValidas)) {
-            $ordenar = 'nombre';
+        if ($busqueda = $request->input('busqueda')) {
+            $consulta->where('nombre', 'ilike', "%{$busqueda}%");
         }
 
-        // Guardar el criterio de ordenación en la sesión
-        session(['ordenar' => $ordenar, 'sentido' => $sentido]);
-
-        // Obtener el valor de búsqueda de la solicitud o de la sesión
-        $busqueda = $request->input('busqueda', session('busqueda', ''));
-        session(['busqueda' => $busqueda ?: session()->forget('busqueda')]);
-
-        // Aplicar el filtro de búsqueda si hay alguno
-        if ($busqueda) {
-            $consulta->where('nombre', 'ilike', "%{$busqueda}%")
-                     ->orWhere('precio', 'ilike', "%{$busqueda}%");
+        if ($precioMin = $request->input('precio_min')) {
+            $consulta->where('precio', '>=', $precioMin);
         }
 
-        // Ejecutar la consulta con el orden y la paginación
-        $productos = $consulta->orderBy($ordenar, $sentido)->paginate(9);
+        if ($precioMax = $request->input('precio_max')) {
+            $consulta->where('precio', '<=', $precioMax);
+        }
 
-        // Retornar la vista con los productos y la búsqueda
-        return view('productos.index', ['productos' => $productos, 'busqueda' => $busqueda]);
+        $orden = $request->input('orden', 'nombre_asc');
+        $ordenamientos = [
+            'nombre_asc' => ['nombre', 'asc'],
+            'nombre_desc' => ['nombre', 'desc'],
+            'precio_asc' => ['precio', 'asc'],
+            'precio_desc' => ['precio', 'desc'],
+        ];
+
+        $consulta->orderBy(...($ordenamientos[$orden] ?? $ordenamientos['nombre_asc']));
+
+        $productos = $consulta->paginate(5);
+
+        return view('productos.index', compact('productos'));
     }
 
 
@@ -65,10 +60,20 @@ class ProductoController extends Controller
     {
         $producto = new Producto();
         $producto->fill($request->validated());
+
+        if ($request->hasFile('imagen')) {
+            $archivo = $request->file('imagen');
+            $nombreArchivo = time() . '_' . $archivo->getClientOriginalName(); // Nombre único
+            $archivo->move(public_path(), $nombreArchivo); // Guarda directamente en "public/"
+            $producto->imagen = $nombreArchivo; // Guarda solo el nombre del archivo
+        }
+
         $producto->save();
+
         session()->flash('exito', 'Los cambios se guardaron correctamente.');
         return redirect()->route('productos.index');
     }
+
 
     /**
      * Display the specified resource.

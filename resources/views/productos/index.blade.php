@@ -15,14 +15,18 @@
                     <label for="orden" class="text-sm">Ordenar</label>
                     <select name="orden" id="orden" class="form-input w-52" onchange="this.form.submit()">
                         <option value="">Ordenar</option>
-                        <option value="nombre_asc" {{ request('orden') == 'nombre_asc' ? 'selected' : '' }}>Nombre (A-Z)
+                        <option value="nombre_asc" {{ request('orden') == 'nombre_asc' ? 'selected' : '' }}>
+                            Nombre (A-Z)
                         </option>
-                        <option value="nombre_desc" {{ request('orden') == 'nombre_desc' ? 'selected' : '' }}>Nombre
-                            (Z-A)</option>
-                        <option value="precio_asc" {{ request('orden') == 'precio_asc' ? 'selected' : '' }}>Precio
-                            (Ascendente)</option>
-                        <option value="precio_desc" {{ request('orden') == 'precio_desc' ? 'selected' : '' }}>Precio
-                            (Descendente)</option>
+                        <option value="nombre_desc" {{ request('orden') == 'nombre_desc' ? 'selected' : '' }}>
+                            Nombre (Z-A)
+                        </option>
+                        <option value="precio_asc" {{ request('orden') == 'precio_asc' ? 'selected' : '' }}>
+                            Precio (Ascendente)
+                        </option>
+                        <option value="precio_desc" {{ request('orden') == 'precio_desc' ? 'selected' : '' }}>
+                            Precio (Descendente)
+                        </option>
                     </select>
                 </div>
 

@@ -30,14 +30,14 @@ class ProductoController extends Controller
         }
 
         $orden = $request->input('orden', 'nombre_asc');
-        $ordenamientos = [
+        $criterios = [
             'nombre_asc' => ['nombre', 'asc'],
             'nombre_desc' => ['nombre', 'desc'],
             'precio_asc' => ['precio', 'asc'],
             'precio_desc' => ['precio', 'desc'],
         ];
 
-        $consulta->orderBy(...($ordenamientos[$orden] ?? $ordenamientos['nombre_asc']));
+        $consulta->orderBy(...($criterios[$orden] ?? $criterios['nombre_asc']));
 
         $productos = $consulta->paginate(5);
 
@@ -73,7 +73,6 @@ class ProductoController extends Controller
         session()->flash('exito', 'Los cambios se guardaron correctamente.');
         return redirect()->route('productos.index');
     }
-
 
     /**
      * Display the specified resource.

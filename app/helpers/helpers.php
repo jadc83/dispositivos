@@ -50,6 +50,29 @@ function comprobarUserLogeado($user)
     }
 }
 
-function generarNumeroAleatorio() {
+function numeroRandom() {
     return rand(0, 9999999);
 }
+
+
+// $producto = DB::table('productos')->where('id', 1)->first();
+
+//DB::table('productos')->insert([
+//    'nombre' => 'Producto 1',
+//    'precio' => 100,
+//    'stock' => 10
+//]);
+
+//DB::table('productos')->where('id', 1)->update(['precio' => 150]);
+
+//DB::table('productos')->where('id', 1)->delete();
+
+//$productos = DB::table('productos')
+//    ->where('precio', '>', 50)
+//    ->where('stock', '>', 0)
+//    ->get();
+
+//$productos = DB::table('productos')
+//    ->join('categorias', 'productos.categoria_id', '=', 'categorias.id')
+//    ->select('productos.nombre', 'productos.precio', 'categorias.nombre as categoria')
+//    ->get();

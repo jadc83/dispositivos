@@ -11,7 +11,7 @@ class StoreOrdenadorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,19 @@ class StoreOrdenadorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'marca' => 'required|string|max:255',
+            'modelo' => 'required|string|max:255',
+            'aula_id' => 'exists:aulas,id'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'marca.required' => 'El nombre del equipo es obligatorio',
+            'marca.max' => 'La longitud del nombre no puede exceder los 255 caracteres',
+            'modelo.required' => 'El nombre del equipo es obligatorio',
+            'modelo.max' => 'La longitud del nombre no puede exceder los 255 caracteres',
         ];
     }
 }

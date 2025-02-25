@@ -10,7 +10,7 @@ class Ordenador extends Model
     /** @use HasFactory<\Database\Factories\OrdenadorFactory> */
     use HasFactory;
     protected $table = 'ordenadores';
-    protected $fillable = ['nombre', 'marca', 'modelo', 'precio'];
+    protected $fillable = ['nombre', 'marca', 'modelo', 'aula_id'];
 
     public function aula()
     {

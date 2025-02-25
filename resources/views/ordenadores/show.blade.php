@@ -59,6 +59,7 @@
 
             </tbody>
         </table>
+            <livewire:borrar-registros :ordenadorId="$ordenador->id" />
     </div>
 
 </x-app-layout>
